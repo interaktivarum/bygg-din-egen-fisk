@@ -51,7 +51,9 @@ public class FishFactory : MonoBehaviour
 
     public static Fish CreateRandomFish (Transform parent)
     {
+        //Fish f = Instantiate(fishPrefab, parent);
         Fish f = Instantiate(fishPrefab, parent);
+        //f.transform.localRotation = new Quaternion();
         List<string> bodyKeys = new List<string>(fishBodies.Keys);
         List<string> headKeys = new List<string>(fishHeads.Keys);
         string bodyStr = bodyKeys[Random.Range(0, bodyKeys.Count)];

@@ -116,6 +116,10 @@ MonoBehaviour:
   header: Plattfisk
   description: "Den platta kroppen g\xF6r din fisk smidig och snabb i sv\xE4ngarna!
     Den simmar g\xE4rna i stim."
+  boundsSpawn:
+    m_Center: {x: 20, y: 5, z: 0}
+    m_Extent: {x: 15, y: 15, z: 10}
+  rotationSpeed: 2
   pattern: 0
 --- !u!212 &610814249856202693
 SpriteRenderer:
@@ -160,7 +164,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: c6fd755dc47ee45368aed9a7ba1f19ae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 29.280003, y: 13.210314}

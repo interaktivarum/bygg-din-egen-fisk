@@ -5,6 +5,8 @@ using UnityEngine;
 public class FishBody : FishPart
 {
 
+    public Bounds boundsSpawn;
+    public float rotationSpeed = 1f;
     public bool pattern;
 
     // Start is called before the first frame update
