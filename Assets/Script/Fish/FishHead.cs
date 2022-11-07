@@ -8,15 +8,14 @@ public class FishHead : FishPart
     public Bounds boundsEat;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-
+        base.Start();
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
 
     public void OnMouseDown()
@@ -25,4 +24,5 @@ public class FishHead : FishPart
         EventHandler.fishHeadClickedEvent.Invoke(this);
         //clickedEvent.Invoke(this);
     }
+
 }

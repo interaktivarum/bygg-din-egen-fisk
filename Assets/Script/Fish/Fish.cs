@@ -29,6 +29,12 @@ public class Fish : MonoBehaviour
     float energyStart = 30f; 
     public float energy;
     bool hunting = false;
+    Fish attacking = null;
+    Fish attacked = null;
+    float attackStart;
+
+    bool escaping;
+    float timeEscape;
     //Tween tweenTarget;
 
     // Start is called before the first frame update
@@ -36,10 +42,6 @@ public class Fish : MonoBehaviour
     {
 
         ResetEnergy();
-
-        Debug.Log(transform.forward);
-        //transform.forward = new Vector3(1, 0, 0);
-        Debug.Log(transform.forward);
 
         transform.LookAt(transform.position + new Vector3(1,0,0));
 
@@ -58,19 +60,45 @@ public class Fish : MonoBehaviour
         }
         //Debug.Log(body);
 
-        updateRotation();
+        UpdateRotation();
+
+        UpdateAttack();
+        UpdateAttacked();
+        EscapeUpdate();
 
         reduceEnergy();
 
     }
 
-    void updateRotation ()
+    float GetSpeed (float magnitude)
+    {
+        if (!(attacking || attacked || escaping))
+        {
+            return body.speed * Mathf.Lerp(0.2f, 1, magnitude / 16);
+        }
+        else
+        {
+            return body.speed * 10;
+        }
+    }
+
+    float GetRotationSpeed()
+    {
+        return body.rotationSpeed * (attacking || attacked || escaping ? 5 : 1);
+    }
+
+    float GetAcceptableTargetDistance()
+    {
+        return attacking ? 0.5f : 2f;
+    }
+
+    void UpdateRotation ()
     {
         if (body)
         {
             Vector3 _dir = (target - transform.position);
 
-            if (_dir.magnitude < 2)
+            if (_dir.magnitude < GetAcceptableTargetDistance())
             {
                 TargetReached();
             }
@@ -82,11 +110,11 @@ public class Fish : MonoBehaviour
                 Quaternion _lookRotation = Quaternion.LookRotation(_direction);
 
                 //rotate us over time according to speed until we are in the required rotation
-                transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * body.rotationSpeed);
+                transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * GetRotationSpeed());
 
                 //gameObject.GetComponentInChildren<BodyFront>().transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime);
 
-                transform.position = transform.position + transform.forward * 0.01f;
+                transform.position = transform.position + transform.forward * GetSpeed(_dir.sqrMagnitude);
             }
         }
     }
@@ -98,8 +126,13 @@ public class Fish : MonoBehaviour
             hunting = false;
         }
 
+        if (attacking)
+        {
+            Debug.Log("Attack success!");
+        }
+
         // Set new target
-        if(energy < 0)
+        if (energy < 0)
         {
             RandomTarget(head.boundsEat);
             hunting = true;
@@ -180,13 +213,18 @@ public class Fish : MonoBehaviour
         //Clone selected head
         GameObject clone = Instantiate(original.gameObject, parent);
         clone.transform.localPosition = new Vector3(0, 0, 0);
-        clone.transform.localScale = new Vector3(1, 1, 10);
+        clone.transform.localScale = new Vector3(1, 1, 1);
 
         head = clone.GetComponent<FishHead>();
 
         return head;
 
         //SpriteRenderer sr = clone.GetComponent<SpriteRenderer>();
+    }
+
+    public void RandomTarget ()
+    {
+        RandomTarget(body.boundsSpawn);
     }
 
     void RandomTarget (Bounds bounds)
@@ -208,6 +246,70 @@ public class Fish : MonoBehaviour
 
         //transform.LookAt(transform.parent.position + target);
 
+    }
+
+    public void Attack(Fish other)
+    {
+        if (this.ids.body != other.ids.body && body.sizesEat.Contains(other.body.size))
+        {
+            Debug.Log("Attack? " + this.ids.body + " > " + other.ids.body);
+            if (!attacking && !attacked && !other.attacking && !other.attacked)
+            {
+                if (Time.fixedTime - attackStart > 10)
+                {
+                    Debug.Log("Attack!");
+                    attacking = other;
+                    other.attacked = this;
+                    attackStart = Time.fixedTime;
+                }
+            }
+            
+        }
+    }
+
+    void UpdateAttack ()
+    {
+        if (attacking)
+        {
+            target = transform.parent.position + attacking.transform.localPosition;
+            if(Time.fixedTime - attackStart > 2)
+            {
+                attacking.attacked = null;
+                attacking.RandomTarget();
+                attacking = null;
+                RandomTarget();
+            }
+        }
+    }
+
+    void UpdateAttacked()
+    {
+        if (attacked)
+        {
+            if (Random.value > 0.001)
+            {
+                RandomTarget();
+                //RandomTarget(body.boundsEscape);
+            }
+        }
+    }
+
+    public void EscapeStart (Fish other)
+    {
+        if (this.ids.body != other.ids.body && other.body.sizesEat.Contains(body.size))
+        {
+            Debug.Log("Escaping: " + ids.body + " < " + other.ids.body);
+            escaping = true;
+            timeEscape = Time.fixedTime;
+        }
+    }
+
+    void EscapeUpdate()
+    {
+        if(escaping && Time.fixedTime - timeEscape > 1)
+        {
+            escaping = false;
+        }
     }
 
 }

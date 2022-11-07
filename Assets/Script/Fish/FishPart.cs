@@ -8,10 +8,12 @@ public class FishPart : MonoBehaviour
     public string header;
     public string description;
 
+    public Vector2 offset;
+
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
-        
+        SetOffset();
     }
 
     // Update is called once per frame
@@ -19,4 +21,13 @@ public class FishPart : MonoBehaviour
     {
         
     }
+
+    void SetOffset ()
+    {
+        Vector3 pp = transform.parent.localPosition;
+        pp.x += offset.x;
+        pp.y += offset.y;
+        transform.parent.localPosition = pp;
+    }
+
 }

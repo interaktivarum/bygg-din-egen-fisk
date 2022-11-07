@@ -7,9 +7,9 @@ Shader "Sprites/Default"
 		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
 		_Color ("Tint", Color) = (1,1,1,1)
 		[MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
-		Time ("Time", Float) = 0
-		Time ("Speed", Float) = 0
-		Time ("Offset", Float) = 0
+		_Speed ("Speed", Float) = 0
+		_Amplitude ("Amplitude", Float) = 0
+		_Offset ("Offset", Float) = 0
 	}
 
 	SubShader
@@ -69,13 +69,13 @@ Shader "Sprites/Default"
 			sampler2D _AlphaTex;
 			float _AlphaSplitEnabled;
 
-			float Time;
-			float Speed;
-			float Offset;
+			float _Speed;
+			float _Amplitude;
+			float _Offset;
 
 			fixed4 SampleSpriteTexture (float2 uv)
 			{
-				uv.x = uv.x + 0.005 * sin(uv.y * 10 + Time * Speed + Offset);
+				uv.x = uv.x + 0.005 * _Amplitude * sin(uv.y * 10 + _Time * _Speed);
 				fixed4 color = tex2D (_MainTex, uv);
 
 #if UNITY_TEXTURE_ALPHASPLIT_ALLOWED
@@ -89,7 +89,7 @@ Shader "Sprites/Default"
 			fixed4 frag(v2f IN) : SV_Target
 			{
 				fixed4 c = SampleSpriteTexture (IN.texcoord) * IN.color;
-				c.rgb *= 1 + 0.3 * sin(IN.texcoord.y * 2 + Time * Speed / 5 + Offset);
+				c.rgb *= 1 + 0.05 * sin(IN.texcoord.y + _Time / 5 + _Offset);
 				c.rgb *= c.a;
 				return c;
 			}

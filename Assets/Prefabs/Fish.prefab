@@ -107,11 +107,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2086270280352588707}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c83082333b77e45de86ea15d3f3b180d, type: 3}
+  m_Script: {fileID: 11500000, guid: c13f849443683453daaa772bc31094b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTransform: {fileID: 0}
-  still: 0
+  boundsSpawnOverride:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  energy: 0
 --- !u!210 &-1887251443360434412
 SortingGroup:
   m_ObjectHideFlags: 0

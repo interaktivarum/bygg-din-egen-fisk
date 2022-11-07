@@ -5,14 +5,25 @@ using UnityEngine;
 public class FishBody : FishPart
 {
 
+    [Header("Where do I belong?")]
     public Bounds boundsSpawn;
+    public Bounds boundsEscape;
+
+    [Header("Movement")]
+    public float speed = 0.01f;
     public float rotationSpeed = 1f;
+
+    [Header("Who eats whom?")]
+    public int size;
+    public List<int> sizesEat;
+
+    [Header("Other settings")]
     public bool pattern;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        
+        base.Start();
     }
 
     // Update is called once per frame
