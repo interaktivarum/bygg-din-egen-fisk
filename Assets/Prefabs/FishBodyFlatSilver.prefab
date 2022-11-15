@@ -76,6 +76,66 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: speed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: energyBite
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: energyFish
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: energyFloor
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: speedAttack
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: speedEscape
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: energySwallow
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: rotationSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: positionSpawn.x
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: positionSpawn.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: boundsHome.m_Center.x
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: boundsHome.m_Center.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: boundsHome.m_Extent.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: boundsHome.m_Extent.y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: boundsHome.m_Extent.z
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 610814249856202681, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
       propertyPath: m_Name
       value: FishBodyFlatSilver

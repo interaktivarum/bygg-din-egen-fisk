@@ -19,7 +19,7 @@ public class AttackTrigger : MonoBehaviour
     {
         if (other.name == "EscapeTrigger")
         {
-            GetComponentInParent<Fish>().Attack(other.GetComponentInParent<Fish>());
+            GetComponentInParent<Fish>().AttackStart(other.GetComponentInParent<Fish>());
         }
     }
 }

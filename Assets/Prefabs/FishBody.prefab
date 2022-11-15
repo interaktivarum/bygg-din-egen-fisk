@@ -116,16 +116,25 @@ MonoBehaviour:
   header: Platt silverfisk
   description: En platt silverfisk.
   offset: {x: 0, y: 0}
-  boundsSpawn:
-    m_Center: {x: 25, y: 10, z: 0}
-    m_Extent: {x: 10, y: 10, z: 5}
+  positionSpawn: {x: 0, y: 0, z: 0}
+  boundsHome:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
   boundsEscape:
     m_Center: {x: 0, y: 0, z: -20}
     m_Extent: {x: 20, y: 20, z: 20}
   speed: 0.01
+  speedAttack: 0.1
+  speedEscape: 0.08
   rotationSpeed: 1
+  idleMovement: 0
   size: 1
   sizesEat: 01000000
+  energyStart: 100
+  energyAttackCost: 20
+  energyBite: 70
+  energySwallow: 50
+  energyFloor: 50
   pattern: 0
 --- !u!212 &610814249856202693
 SpriteRenderer:

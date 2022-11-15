@@ -17,19 +17,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
       propertyPath: speed
-      value: 0.02
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
       propertyPath: header
       value: "L\xE5ng silverfisk"
       objectReference: {fileID: 0}
     - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: energyBite
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
       propertyPath: description
       value: "En l\xE5ng silverfisk."
       objectReference: {fileID: 0}
     - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: energyFloor
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: speedAttack
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: speedEscape
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: energySwallow
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
       propertyPath: rotationSpeed
-      value: 1
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: positionSpawn.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: boundsHome.m_Center.x
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: boundsHome.m_Center.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: boundsHome.m_Extent.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: boundsHome.m_Extent.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
+      propertyPath: boundsHome.m_Extent.z
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
       propertyPath: boundsSpawn.m_Center.x
@@ -45,7 +89,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
       propertyPath: boundsSpawn.m_Extent.y
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 610814249856202680, guid: db6eb91bf531b4b158d8b0ff704c5d5c, type: 3}
       propertyPath: boundsEscape.m_Center.z

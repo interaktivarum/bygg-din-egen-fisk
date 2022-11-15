@@ -51,18 +51,16 @@ public class FishFactory : MonoBehaviour
 
     public static Fish CreateRandomFish (Transform parent)
     {
-        //Fish f = Instantiate(fishPrefab, parent);
         Fish f = Instantiate(fishPrefab, parent);
-        //f.transform.localRotation = new Quaternion();
+
         List<string> bodyKeys = new List<string>(fishBodies.Keys);
         List<string> headKeys = new List<string>(fishHeads.Keys);
         string bodyStr = bodyKeys[Random.Range(0, bodyKeys.Count)];
         string headStr = headKeys[Random.Range(0, headKeys.Count)];
-        Debug.Log("Create random fish:" + bodyStr + " " + headStr);
         f.SetBody(bodyStr);
         f.SetHead(headStr);
 
-        //f.GetComponent<SortingGroup>().sortingOrder = 1;// layerOrder++;
+        f.transform.localPosition = f.body.positionSpawn;
 
         return f;
     }

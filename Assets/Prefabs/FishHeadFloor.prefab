@@ -15,6 +15,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: c2020a2d4135343b094c28b0c577392f, type: 3}
+    - target: {fileID: 5259870231964338185, guid: 0756354efded045eaa7180e4825e7093, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5473044430249239754, guid: 0756354efded045eaa7180e4825e7093, type: 3}
       propertyPath: m_Name
       value: FishHeadFloor

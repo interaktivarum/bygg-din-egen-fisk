@@ -41,23 +41,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7079627835796332541, guid: 0756354efded045eaa7180e4825e7093, type: 3}
       propertyPath: boundsEat.m_Center.x
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7079627835796332541, guid: 0756354efded045eaa7180e4825e7093, type: 3}
       propertyPath: boundsEat.m_Center.y
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7079627835796332541, guid: 0756354efded045eaa7180e4825e7093, type: 3}
       propertyPath: boundsEat.m_Extent.x
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7079627835796332541, guid: 0756354efded045eaa7180e4825e7093, type: 3}
       propertyPath: boundsEat.m_Extent.y
-      value: 5
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7079627835796332541, guid: 0756354efded045eaa7180e4825e7093, type: 3}
       propertyPath: boundsEat.m_Extent.z
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7142138827543904903, guid: 0756354efded045eaa7180e4825e7093, type: 3}
       propertyPath: m_RootOrder
