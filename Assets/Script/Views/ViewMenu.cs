@@ -63,13 +63,14 @@ public class ViewMenu : ViewBase
         {
             body.gameObject.SetActive(false);
         }
-        string idPattern = fish.ids.pattern != null ? fish.ids.pattern : "Silver";
+        string idPattern = fish.body.idPattern.ToString();
         bodies.transform.Find(idPattern).gameObject.SetActive(true);
     }
 
     public void SelectBody(FishBody body)
     {
-        fish.SetBody(body.id);
+        //fish.SetBody(body.idBody);
+        fish.SetBody(body);
         BodySelected();
 
         //Set texts
@@ -107,7 +108,8 @@ public class ViewMenu : ViewBase
 
     public void SelectHead(FishHead head)
     {
-        fish.SetHead(head.id);
+        //fish.SetHead(head.idHead);
+        fish.SetHead(head);
         HeadSelected();
 
         //Set texts
@@ -160,13 +162,14 @@ public class ViewMenu : ViewBase
         {
             pattern.gameObject.SetActive(false);
         }
-        string idBody = fish.ids.body != null ? fish.ids.body : "Flat";
+        string idBody = fish.body.idBody.ToString();
         patterns.transform.Find(idBody).gameObject.SetActive(true);
     }
 
     public void SelectPattern(FishBody body)
     {
-        fish.SetBody(body.id);
+        //fish.SetBody(body.idBody);
+        fish.SetBody(body);
         PatternSelected();
 
         //Set texts
@@ -194,7 +197,8 @@ public class ViewMenu : ViewBase
 
     public void PatternFinish()
     {
-        fishManager.CreateFish(fish.ids);
+        //fishManager.CreateFish(fish.ids);
+        fishManager.CreateFish(fish);
         FinishView();
     }
 

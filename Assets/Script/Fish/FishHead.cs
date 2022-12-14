@@ -5,6 +5,8 @@ using UnityEngine;
 public class FishHead : FishPart
 {
 
+    public HeadID idHead;
+
     public Bounds boundsEat;
 
     // Start is called before the first frame update

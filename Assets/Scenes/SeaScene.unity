@@ -123,6 +123,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &48709330
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 48709331}
+  m_Layer: 0
+  m_Name: Fishes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &48709331
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48709330}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 905034182}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &101607222
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,6 +201,42 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &133759842
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 133759843}
+  m_Layer: 0
+  m_Name: School
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &133759843
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133759842}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1225030243}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &280625399
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,7 +626,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 48709331}
+  - {fileID: 1131009938}
   m_Father: {fileID: 101607224}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -575,7 +644,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c7d01bdbfb4244d7b37bb38af4a566b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nFishes: 10
+  nFishes: 20
+  nMinis: 20
+  factory: {fileID: 1344517340}
 --- !u!1 &930916547
 GameObject:
   m_ObjectHideFlags: 0
@@ -987,6 +1058,37 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: -1
   m_TargetDisplay: 0
+--- !u!1 &1131009937
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1131009938}
+  m_Layer: 0
+  m_Name: Minis
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1131009938
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1131009937}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 905034182}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1225030242
 GameObject:
   m_ObjectHideFlags: 0
@@ -1017,6 +1119,7 @@ RectTransform:
   m_Children:
   - {fileID: 280625400}
   - {fileID: 1548079936}
+  - {fileID: 133759843}
   m_Father: {fileID: 1103692242}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1169,16 +1272,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd5806d55c5074da4b870e0f74533565, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fish: {fileID: 5382462473054497030, guid: c9a7594dc9827414b8ca6c9dde4f2db8, type: 3}
+  fish: {fileID: 5382462473054497030, guid: e39642d625fcf44988f151f115fd0999, type: 3}
   bodies:
-  - {fileID: 8854873178396852935, guid: 66faf6fc6165b4f02b147aee38506b5b, type: 3}
-  - {fileID: 4077135895488637216, guid: b7488fc70a4864aae9ebe1fedc2531d3, type: 3}
-  - {fileID: 8305900246083797577, guid: 5439cfa8d057d4eb4822abe64c2cf842, type: 3}
-  - {fileID: 700651798142554815, guid: 2f30bb6273faa4e7c9bce94299256828, type: 3}
-  - {fileID: 3680245930263143772, guid: 01fac6fd0ac3e46e3938e253c22a7c9f, type: 3}
+  - {fileID: 2230378476831131510, guid: 54169e890282d4acca7e208ae655a84d, type: 3}
+  - {fileID: 13050108376296582, guid: 2d8f2ee999a1845a8ab500d8c25beaa6, type: 3}
+  - {fileID: 2473771834900609291, guid: 0f13a69ebe02a4f86b048266f0a796f7, type: 3}
+  bodiesWeights:
+  - 0.5
+  - 0.3
+  - 0.2
   heads:
-  - {fileID: 5917941361907585714, guid: 3f6fcf04b721f494b866b6c0384bf803, type: 3}
-  - {fileID: 7061663390357548601, guid: 8d3f8d8a4681845948bca44f3a477e22, type: 3}
+  - {fileID: 6196109016529143725, guid: d0cdd3eb8838d49f6acf95a154b1ecfb, type: 3}
+  - {fileID: 8281227219818733998, guid: 1a8b7b782eb6a4bd58f7341a1b8d32f5, type: 3}
+  - {fileID: 4542404899459676320, guid: 71ffb354bb9a5492aac9940627f3d042, type: 3}
+  patternsBodies:
+  - {fileID: 21300000, guid: e637669c81524482d95079f54f92a516, type: 3}
+  - {fileID: 21300000, guid: abc6952c743e044a4a5849fe5471815a, type: 3}
+  - {fileID: 21300000, guid: e9f46ad35a3e24fc39a6aef0bdfbd53c, type: 3}
+  - {fileID: 21300000, guid: d4a2fca7e8013439da2856152dd2e04d, type: 3}
+  - {fileID: 21300000, guid: 104ae78a70eaf4a4991f0ffd306aa21a, type: 3}
+  - {fileID: 21300000, guid: 8fc4f43da61794537b11e0f884783515, type: 3}
+  - {fileID: 21300000, guid: 1f89a3dbb903e4bbeba5290ec2f7e380, type: 3}
+  - {fileID: 21300000, guid: 3c16bf46747d5495e8ab189312a57b23, type: 3}
+  - {fileID: 21300000, guid: 7ec604fd0dc6e4f8aa34fe7034a1b513, type: 3}
+  patternsHeads:
+  - {fileID: 21300000, guid: b478564c3a8d344b591701171ba28bb8, type: 3}
+  - {fileID: 21300000, guid: 86afdb9a06e2f4281be0d880fdc2297c, type: 3}
+  - {fileID: 21300000, guid: 8fd1e510fbfdc493b9b463bff779ede6, type: 3}
+  - {fileID: 21300000, guid: a708ab09424b54ee086018b034a34527, type: 3}
+  - {fileID: 21300000, guid: a84d6b6208c644bbfb48ec9aefee0721, type: 3}
+  - {fileID: 21300000, guid: 864495a16079e41fb802720fc71ced14, type: 3}
+  - {fileID: 21300000, guid: 3e6befb96e5f44b5f81d5ad1da6299fa, type: 3}
+  - {fileID: 21300000, guid: bd1a3dbfa56f84bb993baf563f63c995, type: 3}
+  - {fileID: 21300000, guid: ab297f06d40034f58973a0e0adc3a576, type: 3}
+  bodiesMini:
+  - {fileID: 2230378476831131510, guid: 1bf50b99eea3d430e940ee5f39f946c1, type: 3}
+  bodiesMiniWeights:
+  - 1
+  headsMini:
+  - {fileID: 8281227219818733998, guid: 1a8b7b782eb6a4bd58f7341a1b8d32f5, type: 3}
+  patternsBodiesMini:
+  - {fileID: 21300000, guid: abc6952c743e044a4a5849fe5471815a, type: 3}
+  patternsHeadsMini:
+  - {fileID: 21300000, guid: 864495a16079e41fb802720fc71ced14, type: 3}
 --- !u!1 &1416658277
 GameObject:
   m_ObjectHideFlags: 0

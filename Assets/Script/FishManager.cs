@@ -6,14 +6,26 @@ public class FishManager : MonoBehaviour
 {
 
     public int nFishes = 10;
-    FishIDs fishes;
+    public int nMinis = 10;
+    //FishIDs fishes;
+    Transform fishes;
+    Transform minis;
+
+    public FishFactory factory;
 
     // Start is called before the first frame update
     void Start()
     {
+        fishes = transform.Find("Fishes");
+        minis = transform.Find("Minis");
+
         for(int i = 0; i < nFishes; i++)
         {
-            Fish fish = FishFactory.CreateRandomFish(transform);
+            CreateRandomFish();
+        }
+        for (int i = 0; i < nMinis; i++)
+        {
+            CreateRandomMini();
         }
     }
 
@@ -26,21 +38,45 @@ public class FishManager : MonoBehaviour
         }
     }
 
-    public void CreateFish (FishIDs ids)
+    //public void CreateFish (FishIDs ids)
+    //{
+    //    factory.CreateFish(ids, fishes);
+    //}
+
+    public void CreateFish(Fish fish)
     {
-        FishFactory.CreateFish(ids, transform);
+        factory.CreateFish(fish, fishes);
     }
 
     public void CreateRandomFish()
     {
-        FishFactory.CreateRandomFish(transform);
+        factory.CreateRandomFish(fishes);
     }
+
+    public void CreateRandomMini()
+    {
+        factory.CreateRandomFish(minis, true);
+    }
+
+    //public FishBody GetBody(BodyID id)
+    //{
+    //    return factory.fishBodies[id];
+    //}
+
+    //public FishHead GetHead(HeadID id)
+    //{
+    //    return factory.fishHeads[id];
+    //}
 
     public void RepopulateTest()
     {
-        if(transform.childCount <= nFishes)
+        if(fishes.childCount <= nFishes)
         {
             CreateRandomFish();
+        }
+        if (minis.childCount <= nMinis)
+        {
+            CreateRandomMini();
         }
     }
 

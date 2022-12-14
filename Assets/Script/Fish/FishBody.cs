@@ -10,6 +10,9 @@ public enum IdleMovement
 
 public class FishBody : FishPart
 {
+    public BodyID idBody;
+    public PatternID idPattern;
+    public float scale = 1;
 
     [Header("Where do I belong?")]
     public Vector3 positionSpawn;
@@ -17,11 +20,14 @@ public class FishBody : FishPart
     public Bounds boundsEscape;
 
     [Header("Movement")]
-    public float speed = 0.01f;
-    public float speedAttack = 0.1f;
-    public float speedEscape = 0.08f;
-    public float rotationSpeed = 1f;
+    public float speed = 1;
+    public float speedAttack = 20;
+    public float speedEscape = 15;
+    public float rotationSpeed = 2;
     public IdleMovement idleMovement = IdleMovement.rotate;
+    public Bend lastBend;
+    public Bend[] bends;
+    public float swingSpeed = 1;
 
     [Header("Who eats whom?")]
     public int size;
@@ -39,6 +45,10 @@ public class FishBody : FishPart
     protected override void Start()
     {
         base.Start();
+
+        //Last bend bone
+        bends = GetComponentsInChildren<Bend>();
+        lastBend = bends[bends.Length-1];
     }
 
     // Update is called once per frame

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FishPart : MonoBehaviour
 {
-    public string id;
+    //public string id;
     public string header;
     public string description;
 

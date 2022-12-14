@@ -9,11 +9,38 @@ using static UnityEngine.GraphicsBuffer;
 using Unity.VisualScripting;
 using System.Net.NetworkInformation;
 
+public enum BodyID
+{
+    Flat,
+    Eel,
+    Long,
+    Mini
+}
+
+public enum HeadID
+{
+    Swallow,
+    Floor,
+    Bite
+}
+
+public enum PatternID
+{
+    Dots,
+    Stripes,
+    Silver
+}
+
+
 public struct FishIDs
 {
     public string body;
-    public string head;
     public string pattern;
+    public string head;
+    public override string ToString ()
+    {
+        return body + " " + pattern + " " + head;
+    }
 }
 
 public enum FishState
@@ -30,7 +57,7 @@ public class Fish : MonoBehaviour
 {
 
     //Fish parts
-    public FishIDs ids;
+    //public FishIDs ids;
     public Bounds boundsSpawnOverride;
     public FishBody body;
     public FishHead head;
@@ -45,7 +72,7 @@ public class Fish : MonoBehaviour
 
     // States & timers
     public FishState state = FishState.idle;
-    float timeHunt;
+    float timeHunt = -100;
     Fish attacking = null;
     float timeAttack;
     float attackSuccessThreshold;
@@ -56,12 +83,25 @@ public class Fish : MonoBehaviour
 
     // Misc
     float seed;
+    FishManager fishManager;
+
+    public override string ToString()
+    {
+        return body.idBody.ToString() + body.idPattern.ToString() + head.idHead.ToString();
+    }
+
+    private void Awake()
+    {
+        fishManager = GetComponentInParent<FishManager>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+
         seed = Random.value;
-        ResetEnergy();
+        //ResetEnergy();
+        energy = body.energyStart * Random.Range(0.5f, 1);
 
         transform.LookAt(transform.position + new Vector3(1,0,0));
 
@@ -83,24 +123,46 @@ public class Fish : MonoBehaviour
 
     }
 
-    float GetSpeed (float magnitude)
+    //private void LateUpdate()
+    //{
+    //    MoveUpdate();
+    //}
+
+    public float GetSpeed (float magnitude = 1)
     {
+        float s = 0;
         switch (state)
         {
             case FishState.returning:
-                return body.speed * 2;// * Mathf.Lerp(0.2f, 1, magnitude / 16); ;
+                s = body.speed * 2;// * Mathf.Lerp(0.2f, 1, magnitude / 16); ;
+                break;
             case FishState.attacking:
-                return body.speedAttack;// * Mathf.Lerp(0.2f, 1, magnitude / 32); ;
+                s = body.speedAttack;// * Mathf.Lerp(0.2f, 1, magnitude / 32); ;
+                break;
             case FishState.escaping:
-                return body.speedEscape;// * Mathf.Lerp(0.2f, 1, magnitude / 32); ;
+                s = body.speedEscape;// * Mathf.Lerp(0.2f, 1, magnitude / 32); ;
+                break;
             default:
-                return body.speed * Mathf.Lerp(0.2f, 1, magnitude / 16);
+                s = body.speed * Mathf.Lerp(0.2f, 1, magnitude / 16);
+                //s = body.speed;
+                break;
         }
+        return s * Mathf.Pow(Mathf.Max(GetBend(),0),4);
     }
 
-    float GetRotationSpeed()
+    public float GetRotationSpeed()
     {
         return body.rotationSpeed * (IsStressed() ? 5 : 1);
+    }
+
+    float GetBend()
+    {
+        if (body.bends.Length > 0)
+        {
+            float dot = Vector3.Dot(body.bends[0].transform.forward.normalized, body.lastBend.transform.forward.normalized);
+            return dot;
+        }
+        return 1;
     }
 
     float GetAcceptableTargetDistance()
@@ -109,7 +171,7 @@ public class Fish : MonoBehaviour
         {
             return attackSuccessThreshold;
         }
-        if (state != FishState.idle)
+        if (attacked)
         {
             return 4;
         }
@@ -133,44 +195,77 @@ public class Fish : MonoBehaviour
 
             //if (dir.magnitude < GetAcceptableTargetDistance())
             //{
+
+            foreach (Bend b in GetComponentsInChildren<Bend>())
+            {
+                b.SetPrev();
+            }
+
             if (body.idleMovement == IdleMovement.rotate)
+            {
+                MoveRotationUpdate(dir);
+            }
+            else if (body.idleMovement == IdleMovement.back)
+            {
+                if (IsIdle() && dir.magnitude < GetAcceptableTargetDistance())
+                {
+                    MoveBackUpdate();
+                }
+                else
                 {
                     MoveRotationUpdate(dir);
                 }
-                else if (body.idleMovement == IdleMovement.back)
-                {
-                    if (IsIdle() && dir.magnitude < GetAcceptableTargetDistance())
-                    {
-                        MoveBackUpdate();
-                    }
-                    else
-                    {
-                        MoveRotationUpdate(dir);
-                    }
-                }
-            //}
+            }
+
+            foreach (BoneWave w in GetComponentsInChildren<BoneWave>())
+            {
+                w.UpdateBoneWave();
+            }
+
+            foreach (Bend b in GetComponentsInChildren<Bend>())
+            {
+                b.UpdateRotation();
+            }
         }
+    }
+    private void OnAnimatorMove()
+    {
+        Debug.Log("Animator move");
     }
 
     void MoveRotationUpdate (Vector3 dir)
     {
-        //if (dir.magnitude < GetAcceptableTargetDistance())
+        //Debug.Log("New rotation");
+        Vector3 _direction = dir.normalized;
+
+        //create the rotation we need to be in to look at the target
+        Quaternion _lookRotation = Quaternion.LookRotation(_direction);
+
+        //foreach (Bend b in GetComponentsInChildren<Bend>())
         //{
-        //    TargetReached();
-        //}
-        //else {
-            Vector3 _direction = dir.normalized;
-            //create the rotation we need to be in to look at the target
-            Quaternion _lookRotation = Quaternion.LookRotation(_direction);
-
-            //rotate us over time according to speed until we are in the required rotation
-            transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * GetRotationSpeed());
-
-            //gameObject.GetComponentInChildren<BodyFront>().transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime);
-
-            transform.position = transform.position + transform.forward * GetSpeed(dir.sqrMagnitude) * 0.01f;
+        //    b.SetPrev();
         //}
 
+        //rotate us over time according to speed until we are in the required rotation
+        transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * GetRotationSpeed());
+        //Debug.Log(transform.rotation.eulerAngles - rotPrev);
+
+        //transform.Find("Parts").LookAt(transform.Find("SinTarget"));
+
+        //Transform parts = transform.Find("Parts");
+        transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles + 0.1f * body.swingSpeed * new Vector3(Mathf.Sin(Time.fixedTime * body.swingSpeed), 0, 0));
+
+        //move forward
+        transform.position = transform.position + transform.forward * GetSpeed(dir.sqrMagnitude) * 0.01f;
+
+        //bend body
+        //foreach(Bend b in GetComponentsInChildren<Bend>())
+        //{
+        //    b.UpdateRotation();
+        //}
+        //body.boneBend.transform.rotation = new Quaternion();
+        //body.boneBend.transform.rotation = Quaternion.Slerp(rotPrev, body.boneBend.transform.rotation, 0.01f);
+        GetBend();
     }
 
     void MoveBackUpdate()
@@ -183,6 +278,7 @@ public class Fish : MonoBehaviour
         //rotate us over time according to speed until we are in the required rotation
         transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * GetRotationSpeed());
 
+        //transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles + 0.1f * new Vector3(Mathf.Sin(Time.fixedTime * body.swingSpeed), 0, 0));
         //gameObject.GetComponentInChildren<BodyFront>().transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime);
 
         //transform.position += transform.forward * body.speed * Mathf.Sin(Time.fixedTime + seed);
@@ -215,26 +311,23 @@ public class Fish : MonoBehaviour
                 }
                 break;
             case FishState.hunting:
-                float energyAdd = 0;
-                if (ids.head == "Floor")
+                if (head.idHead == HeadID.Floor)
                 {
-                    energyAdd = body.energyFloor;
+                    EnergyAdd(body.energyFloor);
                 }
-                else if (ids.head == "Bite")
-                {
-                    energyAdd = body.energyBite;
-                }
-                else if (ids.head == "Swallow")
-                {
-                    energyAdd = body.energySwallow;
-                }
-                energy = Mathf.Min(energy + energyAdd, body.energyStart);
                 state = FishState.idle;
                 
                 RandomTarget();
                 break;
             case FishState.attacking:
-                energy += Mathf.Min(energy + body.energyBite, body.energyStart);
+                if (head.idHead == HeadID.Bite)
+                {
+                    EnergyAdd(body.energyBite);
+                }
+                else if (head.idHead == HeadID.Swallow)
+                {
+                    EnergyAdd(body.energySwallow);
+                }
                 AttackSuccess();
                 break;
             case FishState.escaping:
@@ -257,6 +350,16 @@ public class Fish : MonoBehaviour
         //return attacking || attacked || escaping;
     }
 
+    bool EnergyLow ()
+    {
+        return energy < body.energyStart / 2;
+    }
+
+    void EnergyAdd (float add)
+    {
+        energy = Mathf.Min(energy + add, body.energyStart);
+    }
+
     void ResetEnergy ()
     {
         energy = body.energyStart + Random.value * 15;
@@ -264,11 +367,9 @@ public class Fish : MonoBehaviour
 
     void EnergyUpdate ()
     {
-        if (Time.fixedTime - timeHunt > 30 && energy < body.energyStart / 2)
+        if (Time.fixedTime - timeHunt > 30 && EnergyLow() && AttackTimeTest())
         {
-            RandomTarget(head.boundsEat);
-            state = FishState.hunting;
-            timeHunt = Time.fixedTime;
+            HuntStart();
         }
         ReduceEnergy();
     }
@@ -282,22 +383,33 @@ public class Fish : MonoBehaviour
         }
     }
 
+    void HuntStart()
+    {
+        RandomTarget(head.boundsEat);
+        state = FishState.hunting;
+        timeHunt = Time.fixedTime;
+    }
+
     void SetAnimationClip()
     {
         //animator.SetFloat("speed", 1.2f);
     }
 
-    public FishBody SetBody(string id)
-    {
-        string[] idSplit = id.Split(" ");
-        ids.body = idSplit[0];
-        ids.pattern= idSplit[1];
-        FishBody fb = SetBody(FishFactory.GetBody(id));
-        return fb;
-    }
+    //public FishBody SetBody(BodyID idBody, PatternID idPattern)
+    //{
+    //    ids.body = idBody;
+    //    ids.pattern = idPattern;
+    //    FishBody fb = SetBody(fishManager.GetBody(idBody));
+    //    return fb;
+    //}
 
-    FishBody SetBody(FishBody original)
+    public FishBody SetBody(FishBody original)
     {
+        //Set ids
+        //string[] idSplit = original.idBody.Split(" ");
+        //ids.body = idSplit[0];
+        //ids.pattern = idSplit[1];
+
         Transform parent = transform.Find("Parts/Body");
 
         //Remove current body
@@ -322,14 +434,17 @@ public class Fish : MonoBehaviour
 
     }
 
-    public FishHead SetHead(string id)
-    {
-        ids.head = id;
-        return SetHead(FishFactory.GetHead(id));
-    }
+    //public FishHead SetHead(string id)
+    //{
+    //    ids.head = id;
+    //    return SetHead(fishManager.GetHead(id));
+    //}
 
-    FishHead SetHead(FishHead original)
+    public FishHead SetHead(FishHead original)
     {
+        //Set ids
+        //ids.head = original.idHead;
+
         Transform parent = transform.Find("Parts/Head");
 
         //Remove current head
@@ -379,82 +494,88 @@ public class Fish : MonoBehaviour
         return bounds.Contains(transform.position - transform.parent.position);
     }
 
-    bool DiscoverTest(Fish other)
+    bool IsCamouflaged()
     {
-        float t = 1f;
-        switch (other.ids.body)
+        switch (body.idBody)
         {
-            case "Flat":
-                if (other.ids.pattern == "Gold" && other.IsHome())
+            case BodyID.Flat:
+                if (body.idPattern == PatternID.Stripes && IsHome())
                 {
-                    t = 0.1f;
+                    return true;
                 }
-                if (other.ids.pattern == "Silver" && !other.IsHome())
+                if (body.idPattern == PatternID.Silver && !IsHome())
                 {
-                    t = 0.1f;
-                }
-                break;
-            case "Eel":
-                if (other.ids.pattern == "Gold" && other.IsHome())
-                {
-                    t = 0.1f;
-                }
-                if (other.ids.pattern == "Silver" && !other.IsHome())
-                {
-                    t = 0.1f;
+                    return true;
                 }
                 break;
-            case "Long":
-                if (other.ids.pattern == "Silver")
+            case BodyID.Eel:
+                if (body.idPattern == PatternID.Dots && IsHome())
                 {
-                    t = 0.1f;
+                    return true;
+                }
+                //if (body.idPattern == PatternID.Silver && !IsHome())
+                //{
+                //    return true;
+                //}
+                break;
+            case BodyID.Long:
+                if (body.idPattern == PatternID.Silver)
+                {
+                    return true;
+                }
+                break;
+            case BodyID.Mini:
+                if (IsHome())
+                {
+                    return true;
                 }
                 break;
         }
+        return false;
+    }
+
+    bool DiscoverTest(Fish other)
+    {
+        float t = other.IsCamouflaged() ? 0.1f : 0.9f;
         return Random.value < t;
+        //return !other.IsCamouflaged();
+    }
+
+    bool AttackTimeTest ()
+    {
+        return Time.fixedTime - timeAttack > 20;
     }
 
     float AttackSuccessTest(Fish other, float min, float max)
     {
-        float t = 1f;
-        if (other.ids.body == "Flat")
-        {
-            if (other.ids.pattern == "Silver")
-            {
-                t = other.IsHome() ? 1 : 0;
-            }
-            else if (other.ids.pattern == "Gold")
-            {
-                t = other.IsHome() ? 0 : 1;
-            }
-        }
-        
-        //Debug.Log("Attacked: " + other.ids.body + " " + other.ids.pattern + " " + other.IsHome());
-
+        float t = other.IsCamouflaged() ? 0 : 1;
         return Mathf.Lerp(min, max, t);
     }
 
     public void AttackStart(Fish other)
     {
-        if (this.ids.body != other.ids.body && body.sizesEat.Contains(other.body.size))
-        {
-            if (DiscoverTest(other))
+        if (this.body.idBody != other.body.idBody && EnergyLow()) {
+            if ((head.idHead == HeadID.Bite && body.sizesEat.Contains(other.body.size)) ||
+                (head.idHead == HeadID.Swallow && other.body.idBody == BodyID.Mini))
             {
-                if (Time.fixedTime - timeAttack > 10)
+                if (DiscoverTest(other))
                 {
-                    if (!(IsStressed() || other.attacking || other.attacked || other.state == FishState.returning || other.state == FishState.dying))
+                    if (AttackTimeTest())
                     {
-                        state = FishState.attacking;
-                        energy -= body.energyAttackCost;
-                        attackSuccessThreshold = AttackSuccessTest(other, 0.5f, 4);
-                        //Debug.Log("Success threshold: " + attackSuccessThreshold);
-                        attacking = other;
-                        other.attacked = this;
-                        timeAttack = Time.fixedTime;
+                        if (!(IsStressed() || other.attacking || other.attacked || other.state == FishState.returning || other.state == FishState.dying))
+                        {
+                            state = FishState.attacking;
+                            energy -= body.energyAttackCost;
+                            attackSuccessThreshold = AttackSuccessTest(other, 0.5f, 3);
+                            //Debug.Log("Success threshold: " + attackSuccessThreshold);
+                            attacking = other;
+                            other.attacked = this;
+                            timeAttack = Time.fixedTime;
+                        }
                     }
                 }
+
             }
-            
         }
     }
 
@@ -463,9 +584,10 @@ public class Fish : MonoBehaviour
         if (attacking)
         {
             SetTarget(transform.parent.position + attacking.transform.localPosition);
-            if(Time.fixedTime - timeAttack > 1)
+            if(Time.fixedTime - timeAttack > 2)
             {
-                Debug.Log("Attack unsuccessful: " + attackSuccessThreshold);
+                //Debug.Log("Attack unsuccessful: " + attackSuccessThreshold);
+                AttackLog(attacking, false);
                 AttackAbort();
             }
         }
@@ -473,7 +595,8 @@ public class Fish : MonoBehaviour
 
     void AttackSuccess()
     {
-        Debug.Log("Attack success: " + attackSuccessThreshold);
+        //Debug.Log("Attack success: " + attackSuccessThreshold);
+        AttackLog(attacking, true);
         attacking.Die();
         AttackAbort();
     }
@@ -489,9 +612,22 @@ public class Fish : MonoBehaviour
         timeEscape = Time.fixedTime;
     }
 
+    void AttackLog(Fish other, bool success)
+    {
+        string str = "";
+        str += "Attack " + (success ? "success" : "fail") +
+            " (" + attackSuccessThreshold + ", " +
+            (other.IsHome() ? "home" : "out") + "). \n";
+        str += body.idBody.ToString() + body.idPattern.ToString() + head.idHead.ToString() + " > ";
+        str += other.body.idBody.ToString() + other.body.idPattern.ToString() + other.head.idHead.ToString() + ".";
+        Debug.Log(str);
+    }
+
     public void EscapeStart (Fish other)
     {
-        if (this.ids.body != other.ids.body && other.body.sizesEat.Contains(body.size))
+        if (this.body.idBody != other.body.idBody &&
+            (other.head.idHead == HeadID.Bite && other.body.sizesEat.Contains(body.size) && other.state != FishState.idle)
+            || other.head.idHead == HeadID.Swallow && body.idBody == BodyID.Mini)
         {
             if (DiscoverTest(other))
             {
@@ -511,7 +647,14 @@ public class Fish : MonoBehaviour
     {
         if((state == FishState.escaping && Time.fixedTime - timeEscape > 0.2) && !attacked)
         {
-            state = FishState.returning;
+            if (EnergyLow())
+            {
+                HuntStart();
+            }
+            else
+            {
+                state = FishState.returning;
+            }
         }
     }
 
@@ -526,7 +669,7 @@ public class Fish : MonoBehaviour
 
     void DoDie()
     {
-        GetComponentInParent<FishManager>().RepopulateTest();
+        fishManager.RepopulateTest();
         Destroy(gameObject);
     }
 
