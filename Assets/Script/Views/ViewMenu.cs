@@ -198,7 +198,7 @@ public class ViewMenu : ViewBase
     public void PatternFinish()
     {
         //fishManager.CreateFish(fish.ids);
-        fishManager.CreateFish(fish);
+        //fishManager.CreateFish(fish);
         FinishView();
     }
 

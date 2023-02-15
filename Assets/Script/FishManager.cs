@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class FishManager : MonoBehaviour
 {
-
+    [Header("Fishes")]
     public int nFishes = 10;
     public int nMinis = 10;
     //FishIDs fishes;
     Transform fishes;
     Transform minis;
 
+    [Header("Areas")]
+    public RectTransform areaWeed;
+    public RectTransform areaWeedThick;
+    public RectTransform areaCoral;
+    public RectTransform areaCoralThick;
+
+    [Header("Misc")]
+    public App app;
     public FishFactory factory;
 
     // Start is called before the first frame update
@@ -43,18 +51,20 @@ public class FishManager : MonoBehaviour
     //    factory.CreateFish(ids, fishes);
     //}
 
-    public void CreateFish(Fish fish)
-    {
-        factory.CreateFish(fish, fishes);
-    }
+    //public void CreateFish(Fish fish)
+    //{
+    //    factory.CreateFish(fish, fishes);
+    //}
 
     public void CreateRandomFish()
     {
+        //Debug.Log("Create random fish");
         factory.CreateRandomFish(fishes);
     }
 
     public void CreateRandomMini()
     {
+        //Debug.Log("Create random mini");
         factory.CreateRandomFish(minis, true);
     }
 
@@ -70,13 +80,16 @@ public class FishManager : MonoBehaviour
 
     public void RepopulateTest()
     {
+        //Debug.Log("Repopulate in 60 seconds");
         if(fishes.childCount <= nFishes)
         {
-            CreateRandomFish();
+            app.timeHelper.WaitAndCallFunction(CreateRandomFish, 60);
+            //CreateRandomFish();
         }
         if (minis.childCount <= nMinis)
         {
-            CreateRandomMini();
+            app.timeHelper.WaitAndCallFunction(CreateRandomMini, 60);
+            //CreateRandomMini();
         }
     }
 

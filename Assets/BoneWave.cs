@@ -11,9 +11,9 @@ public class BoneWave : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void UpdateBoneWave()
+    public void UpdateBoneWave(float seed, float speed)
     {
-        transform.localRotation = Quaternion.Euler(new Vector3(0, 40 * Mathf.Pow(Mathf.Sin(Time.fixedTime * 2), 1), 0));
+        transform.localRotation = Quaternion.Euler(new Vector3(0,0,10 * Mathf.Sin(Time.fixedTime + seed)));
         //transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 80 * (Mathf.PerlinNoise(Time.fixedTime * 2,0)-0.5f)));
     }
 }

@@ -21,6 +21,7 @@ public class App: MonoBehaviour
     //bool screensaver = true;
     public TimeHelper timeHelper;
     public ViewManager viewManager;
+    TextLocale[] textsLocale;
 
     private void Awake()
     {
@@ -30,8 +31,9 @@ public class App: MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        timeHelper = GetComponent<TimeHelper>();
         SetLastInteraction();
+        InitLocale();
 
         // Init singleton
         //AppSingleton.I.app = this;        
@@ -84,10 +86,19 @@ public class App: MonoBehaviour
     }
 
     // Language functions
-    public void SetLanguage(string language)
+
+    public void InitLocale() {
+        textsLocale = FindObjectsOfType<TextLocale>(true);
+        //foreach (TextLocale tl in textsLocale) {
+        //    tl.Init(2);
+        //}
+    }
+    
+    public void SetLocale(int id)
     {
-        AppSingleton.I.language = language;
-        //viewActive.GetComponent<ViewBase>().UpdateDataFields();
+        foreach(TextLocale tl in textsLocale) {
+            tl.SetLocale(id);
+        }
     }
 
     // Views functions

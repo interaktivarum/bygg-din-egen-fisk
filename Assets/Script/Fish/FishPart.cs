@@ -25,8 +25,8 @@ public class FishPart : MonoBehaviour
     void SetOffset ()
     {
         Vector3 pp = transform.parent.localPosition;
-        pp.x += offset.x;
-        pp.y += offset.y;
+        pp.x = offset.x;
+        pp.y = offset.y;
         transform.parent.localPosition = pp;
     }
 

@@ -5,15 +5,14 @@ public class TimeHelper : MonoBehaviour
 {
     public delegate void CallbackDelegate();
 
-    public void WaitAndCallFunction(CallbackDelegate callback, float time)
+    public void WaitAndCallFunction(CallbackDelegate callback, float seconds)
     {
-        Debug.Log(callback);
-        StartCoroutine(DoWaitAndCallFunction(callback, time));
+        StartCoroutine(DoWaitAndCallFunction(callback, seconds));
     }
 
-    IEnumerator DoWaitAndCallFunction(CallbackDelegate callback, float time)
+    IEnumerator DoWaitAndCallFunction(CallbackDelegate callback, float seconds)
     {
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(seconds);
         callback();
     }
 

@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c13f849443683453daaa772bc31094b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boundsSpawnOverride:
+  boundsHomeOverride:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   body: {fileID: 0}

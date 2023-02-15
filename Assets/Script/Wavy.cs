@@ -14,6 +14,7 @@ public class Wavy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //offset = Random.value;
         material = GetComponent<SpriteRenderer>().material;
         material.SetFloat("_Speed", speed);
         material.SetFloat("_Amplitude", amplitude);

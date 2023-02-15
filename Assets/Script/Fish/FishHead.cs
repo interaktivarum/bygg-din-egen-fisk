@@ -18,13 +18,26 @@ public class FishHead : FishPart
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.B)) {
+            Animator animator = GetComponent<Animator>();
+            if (animator) {
+                SetBite(!animator.GetBool("BiteBool"));
+            }
+        }
     }
 
-    public void OnMouseDown()
-    {
-        Debug.Log("Clicked");
-        EventHandler.fishHeadClickedEvent.Invoke(this);
-        //clickedEvent.Invoke(this);
+    public void SetBite(bool state) {
+        Animator animator = GetComponent<Animator>();
+        if (animator) {
+            animator.SetBool("BiteBool", state);
+        }
     }
+
+    //public void OnMouseDown()
+    //{
+    //    Debug.Log("Clicked");
+    //    EventHandler.fishHeadClickedEvent.Invoke(this);
+    //    //clickedEvent.Invoke(this);
+    //}
 
 }

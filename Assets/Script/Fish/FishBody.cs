@@ -16,6 +16,7 @@ public class FishBody : FishPart
 
     [Header("Where do I belong?")]
     public Vector3 positionSpawn;
+    public RectTransform rectHome;
     public Bounds boundsHome;
     public Bounds boundsEscape;
 
@@ -57,17 +58,17 @@ public class FishBody : FishPart
         
     }
 
-    public void OnMouseDown()
-    {
-        Debug.Log("Clicked");
-        if (!pattern)
-        {
-            EventHandler.fishBodyClickedEvent.Invoke(this);
-        }
-        else
-        {
-            EventHandler.fishPatternClickedEvent.Invoke(this);
-        }
-        //clickedEvent.Invoke(this);
-    }
+    //public void OnMouseDown()
+    //{
+    //    Debug.Log("Clicked");
+    //    if (!pattern)
+    //    {
+    //        EventHandler.fishBodyClickedEvent.Invoke(this);
+    //    }
+    //    else
+    //    {
+    //        EventHandler.fishPatternClickedEvent.Invoke(this);
+    //    }
+    //    //clickedEvent.Invoke(this);
+    //}
 }

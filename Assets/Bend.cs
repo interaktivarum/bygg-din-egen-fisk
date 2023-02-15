@@ -14,7 +14,7 @@ public class Bend : MonoBehaviour
 
     public void UpdateRotation()
     {
-        float s = GetComponentInParent<Fish>().GetRotationSpeed() / 100;
+        float s = GetComponentInParent<Fish>().GetRotationSpeed() * Time.deltaTime * 2;
         transform.rotation = new Quaternion();
         transform.rotation = Quaternion.Slerp(rotationPrev, transform.rotation, s);
         //transform.rotation = Quaternion.Euler(0, 0, 1);

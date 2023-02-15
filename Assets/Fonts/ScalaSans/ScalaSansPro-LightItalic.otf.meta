@@ -1,0 +1,28 @@
+fileFormatVersion: 2
+guid: bbfd94fb06c762c4fbbe296dcefbca57
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - ScalaSansPro
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 972a65d5984b86040b30615447055558, type: 3}
+  - {fileID: 12800000, guid: 3145393b2430e4a4a9125caff7245f0a, type: 3}
+  - {fileID: 12800000, guid: 534ff96f5980c2a4b9a5dc688ea74f4e, type: 3}
+  - {fileID: 12800000, guid: 7bfad74243afd9249ab1bcd01e73223b, type: 3}
+  - {fileID: 12800000, guid: 64fcbd427038cb7478622c740c6c031c, type: 3}
+  - {fileID: 12800000, guid: 44edd1cf4cbe35b4282cc5cd6e502511, type: 3}
+  - {fileID: 12800000, guid: 576804c8040095e4aa8b19f763ec84bb, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

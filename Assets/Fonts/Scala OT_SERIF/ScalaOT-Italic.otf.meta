@@ -1,0 +1,26 @@
+fileFormatVersion: 2
+guid: bf9c257ab32aede48939aa3ae7a2a6b3
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - ScalaOT
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: c41383077696e544693e922a3898f5d3, type: 3}
+  - {fileID: 12800000, guid: 04ae6fe07261185418b15aa1eec726ae, type: 3}
+  - {fileID: 12800000, guid: 35efed4052cba73438eeb4754c080224, type: 3}
+  - {fileID: 12800000, guid: 42ca33f951847534f94dd8f05f404e8a, type: 3}
+  - {fileID: 12800000, guid: 8ba13bb03f37e734fb17aa40a9d09568, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

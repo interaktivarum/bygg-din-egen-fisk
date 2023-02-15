@@ -61,11 +61,56 @@ public class FishFactory : MonoBehaviour
     //    return f;
     //}
 
-    public Fish CreateFish(Fish fish, Transform parent)
-    {
-        Fish f = Instantiate(fish, parent);
-        //f.SetBody(fish.body + " " + ids.pattern);
-        //f.SetHead(ids.head);
+    public int CountBodies () {
+        return bodies.Length;
+    }
+
+    public int CountHeads() {
+        return heads.Length;
+    }
+
+    public int CountPatterns() {
+        return patternsBodies.Length / CountBodies();
+    }
+
+    public FishBody GetBodyById(int idBody, int idPattern) {
+        FishBody body = bodies[idBody];
+        Sprite patternBody = GetBodyPatternById(idBody, idPattern);
+        body.GetComponent<SpriteRenderer>().sprite = patternBody;
+        return body;
+    }
+
+    public FishHead GetHeadById(int idHead, int idPattern) {
+        FishHead head = heads[idHead];
+        int nPatterns = patternsHeads.Length / heads.Length;
+        Sprite patternHead = GetHeadPatternById(idHead, idPattern);
+        head.GetComponent<SpriteRenderer>().sprite = patternHead;
+        return head;
+    }
+
+    public Sprite GetBodyPatternById(int idBody, int idPattern) {
+        return patternsBodies[idPattern + idBody * CountPatterns()];
+    }
+
+    public Sprite GetHeadPatternById(int idHead, int idPattern) {
+        return patternsHeads[idPattern + idHead * CountPatterns()];
+    }
+
+    public Fish CreateFish(FishBody body, FishHead head, Transform parent) {
+
+        Fish f = Instantiate(fishPrefab, parent);
+
+        if (body) {
+            f.SetBody(body);
+            f.transform.localPosition = body.positionSpawn;
+            f.transform.localScale = new Vector3(body.scale, body.scale, body.scale);
+            // Adjust position for body translation
+            f.transform.GetChild(0).localPosition = new Vector3(0, 0, -body.offset.x);
+        }
+        if (head) {
+            f.SetHead(head);
+        }
+
         return f;
     }
 
