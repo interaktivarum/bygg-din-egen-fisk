@@ -17,9 +17,13 @@ public class TextLocale : MonoBehaviour
     TextMeshProUGUI tm;
 
     // Start is called before the first frame update
+
+    private void Awake() {
+        tm = GetComponent<TextMeshProUGUI>();
+    }
+
     void Start()
     {
-        tm = GetComponent<TextMeshProUGUI>();
         SetLocale(0);
     }
 
@@ -45,7 +49,8 @@ public class TextLocale : MonoBehaviour
 
     void UpdateText() {
         if (texts.texts.Length > idLocale) {
-            tm.text = texts.texts[idLocale];
+            Debug.Log(texts, tm);
+            tm.text = texts.texts[idLocale].Replace("\\n", "\n");
         }
     }
 

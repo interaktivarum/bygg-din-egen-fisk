@@ -22,6 +22,8 @@ public class FishFactory : MonoBehaviour
     public Sprite[] patternsBodiesMini;
     public Sprite[] patternsHeadsMini;
 
+    public Vector3Int[] fishCombinations;
+
     //public Dictionary<BodyID, FishBody> fishBodies = new Dictionary<BodyID, FishBody>();
     //public Dictionary<HeadID, FishHead> fishHeads = new Dictionary<HeadID, FishHead>();
 
@@ -114,15 +116,133 @@ public class FishFactory : MonoBehaviour
         return f;
     }
 
-    public Fish CreateRandomFish(Transform parent, bool mini = false)
-    {
+    //public Fish CreateRandomFish(Transform parent, bool mini = false)
+    //{
+    //    Fish f = Instantiate(fishPrefab, parent);
+
+    //    FishBody[] b = mini ? bodiesMini : bodies;
+    //    float[] bw = mini ? bodiesMiniWeights : bodiesWeights;
+    //    FishHead[] h = mini ? headsMini : heads;
+    //    Sprite[] pb = mini ? patternsBodiesMini : patternsBodies;
+    //    Sprite[] ph = mini ? patternsHeadsMini : patternsHeads;
+
+    //    int nBodies = b.Length;
+    //    int nHeads = h.Length;
+    //    int nPatterns = pb.Length / nBodies;
+
+    //    //List<string> bodyKeys = new List<string>(fishBodies.Keys);
+    //    //List<string> headKeys = new List<string>(fishHeads.Keys);
+    //    //string bodyStr = bodyKeys[Random.Range(0, bodyKeys.Count)];
+    //    //string headStr = headKeys[Random.Range(0, headKeys.Count)];
+    //    //f.SetBody(bodyStr);
+    //    //f.SetHead(headStr);
+
+    //    //Decide body
+    //    int bodyInt = 0;
+    //    float rBody = Random.value;
+    //    float wAcc = 0;
+    //    for (int i = 0; i < bw.Length; i++)
+    //    {
+    //        wAcc += bw[i];
+    //        if(rBody < wAcc)
+    //        {
+    //            bodyInt = i;
+    //            break;
+    //        }
+    //    }
+    //    //int bodyInt = rBody < 0.5f ? 0 : (rBody < 0.8f ? 1 : 2);
+    //    //int bodyInt = Random.Range(0, nBodies);
+
+    //    int headInt = Random.Range(0, nHeads);
+    //    int patternInt = Random.Range(0, nPatterns);
+
+    //    FishBody body = f.SetBody(b[bodyInt]);
+    //    FishHead head = f.SetHead(h[headInt]);
+
+    //    //Set patterns
+    //    body.idPattern = (PatternID)patternInt;
+    //    Sprite patternBody = pb[patternInt + bodyInt * nPatterns];
+    //    body.GetComponent<SpriteRenderer>().sprite = patternBody;
+
+    //    Sprite patternHead = ph[patternInt + headInt * nPatterns];
+    //    head.GetComponent<SpriteRenderer>().sprite = patternHead;
+
+    //    f.transform.localPosition = body.positionSpawn;
+    //    f.transform.localScale = new Vector3(body.scale, body.scale, body.scale);
+
+    //    // Adjust position for body translation
+    //    f.transform.GetChild(0).localPosition = new Vector3(0, 0, -body.offset.x);
+
+    //    return f;
+    //}
+
+    public Fish CreateRandomFish(Transform parent) {
         Fish f = Instantiate(fishPrefab, parent);
 
-        FishBody[] b = mini ? bodiesMini : bodies;
-        float[] bw = mini ? bodiesMiniWeights : bodiesWeights;
-        FishHead[] h = mini ? headsMini : heads;
-        Sprite[] pb = mini ? patternsBodiesMini : patternsBodies;
-        Sprite[] ph = mini ? patternsHeadsMini : patternsHeads;
+        FishBody[] b = bodies;
+        float[] bw = bodiesWeights;
+        FishHead[] h = heads;
+        Sprite[] pb = patternsBodies;
+        Sprite[] ph = patternsHeads;
+
+        int nBodies = b.Length;
+        int nHeads = h.Length;
+        int nPatterns = pb.Length / nBodies;
+
+        //List<string> bodyKeys = new List<string>(fishBodies.Keys);
+        //List<string> headKeys = new List<string>(fishHeads.Keys);
+        //string bodyStr = bodyKeys[Random.Range(0, bodyKeys.Count)];
+        //string headStr = headKeys[Random.Range(0, headKeys.Count)];
+        //f.SetBody(bodyStr);
+        //f.SetHead(headStr);
+
+        //Decide body
+        int fishInt = 0;
+        float rBody = Random.value;
+        float wAcc = 0;
+        for (int i = 0; i < bw.Length; i++) {
+            wAcc += bw[i];
+            if (rBody < wAcc) {
+                fishInt = i;
+                break;
+            }
+        }
+        Vector3Int fishCombination = fishCombinations[fishInt];
+        //int bodyInt = rBody < 0.5f ? 0 : (rBody < 0.8f ? 1 : 2);
+        //int bodyInt = Random.Range(0, nBodies);
+
+        int bodyInt = fishCombination[0];
+        int headInt = fishCombination[1];
+        int patternInt = fishCombination[2];
+
+        FishBody body = f.SetBody(b[bodyInt]);
+        FishHead head = f.SetHead(h[headInt]);
+
+        //Set patterns
+        body.idPattern = (PatternID)patternInt;
+        Sprite patternBody = pb[patternInt + bodyInt * nPatterns];
+        body.GetComponent<SpriteRenderer>().sprite = patternBody;
+
+        Sprite patternHead = ph[patternInt + headInt * nPatterns];
+        head.GetComponent<SpriteRenderer>().sprite = patternHead;
+
+        f.transform.localPosition = body.positionSpawn;
+        f.transform.localScale = new Vector3(body.scale, body.scale, body.scale);
+
+        // Adjust position for body translation
+        f.transform.GetChild(0).localPosition = new Vector3(0, 0, -body.offset.x);
+
+        return f;
+    }
+
+    public Fish CreateRandomMini(Transform parent) {
+        Fish f = Instantiate(fishPrefab, parent);
+
+        FishBody[] b = bodiesMini;
+        float[] bw = bodiesMiniWeights;
+        FishHead[] h = headsMini;
+        Sprite[] pb = patternsBodiesMini;
+        Sprite[] ph = patternsHeadsMini;
 
         int nBodies = b.Length;
         int nHeads = h.Length;
@@ -139,11 +259,9 @@ public class FishFactory : MonoBehaviour
         int bodyInt = 0;
         float rBody = Random.value;
         float wAcc = 0;
-        for (int i = 0; i < bw.Length; i++)
-        {
+        for (int i = 0; i < bw.Length; i++) {
             wAcc += bw[i];
-            if(rBody < wAcc)
-            {
+            if (rBody < wAcc) {
                 bodyInt = i;
                 break;
             }

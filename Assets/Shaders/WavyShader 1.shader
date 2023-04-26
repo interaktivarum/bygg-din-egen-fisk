@@ -90,8 +90,9 @@ Shader "Sprites/Default"
 			{
 				fixed4 c = SampleSpriteTexture (IN.texcoord) * IN.color;
 				//c.rgb *= 0.95 + 0.05 * sin(IN.texcoord.y + _Time * 0.1 + _Offset * 10);
-                float s = sin(IN.texcoord.y * 4 + _Time * 4 *(1 + _Offset) + _Offset * 10);
-                c.rgb *= 0.75 + 0.25 * s;// * sin(_Time + _Offset * 10);
+                // float s = sin(IN.texcoord.y * 4 + _Time * 2 *(1 + _Offset) + _Offset * 10);
+                float s = sin(IN.texcoord.y * 4 + _Time * 2 *(1 + _Offset) + _Offset * 10) + 0.025f*_Amplitude * cos((IN.texcoord.x * (100 + sin(_Time * 10)) + IN.texcoord.y * 10) + _Time * 100 * (1 + _Offset) + _Offset * 10);
+                c.rgb *= 0.65 + 0.35 * s;// * sin(_Time + _Offset * 10);
 				c.rgb *= c.a;
 				return c;
 			}

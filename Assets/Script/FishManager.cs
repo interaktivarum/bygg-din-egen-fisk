@@ -65,7 +65,7 @@ public class FishManager : MonoBehaviour
     public void CreateRandomMini()
     {
         //Debug.Log("Create random mini");
-        factory.CreateRandomFish(minis, true);
+        factory.CreateRandomMini(minis);
     }
 
     //public FishBody GetBody(BodyID id)

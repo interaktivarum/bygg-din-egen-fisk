@@ -8,6 +8,7 @@ public class ViewBase : MonoBehaviour
     public ViewManager viewManager;
     public ViewBase loadViewOnFinish;
     public string loadSceneOnFinish;
+    public bool ignoreInteractionTimeout = false;
 
     private void Awake()
     {

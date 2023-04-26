@@ -14,7 +14,7 @@ public class Pulse : MonoBehaviour
     void Start()
     {
         //StartTween();
-        tween = transform.DOScale(new Vector3(scaleMin, scaleMin, scaleMin), 1).SetLoops(-1, LoopType.Yoyo);
+        tween = transform.DOScale(new Vector3(scaleMin, scaleMin, scaleMin), 1).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutQuad);
     }
 
     // Update is called once per frame

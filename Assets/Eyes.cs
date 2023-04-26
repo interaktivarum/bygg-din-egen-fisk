@@ -26,7 +26,7 @@ public class Eyes : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
 
         sequence.Append(transform.DOScale(0.75f, 0.1f));
-        sequence.AppendInterval(0.5f);
+        sequence.AppendInterval(1f);
         sequence.Append(transform.DOScale(0, 0.1f));
         sequence.Play();
         timeDisapppear = Time.time;

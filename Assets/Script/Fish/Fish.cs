@@ -8,6 +8,7 @@ using DG.Tweening;
 using static UnityEngine.GraphicsBuffer;
 using Unity.VisualScripting;
 using System.Net.NetworkInformation;
+using UnityEngine.Rendering;
 
 public enum BodyID
 {
@@ -111,8 +112,8 @@ public class Fish : MonoBehaviour
     {
 
         seed = Random.value;
-        ResetEnergy();
-        //energy = body.energyStart * Random.Range(0.2f, 0.5f);
+        //ResetEnergy();
+        energy = body.energyStart * Random.Range(0.75f, 1f);
 
         transform.LookAt(transform.position + new Vector3(1,0,0));
 
@@ -157,9 +158,9 @@ public class Fish : MonoBehaviour
             case FishState.returning:
                 s = body.speed * 2;// * Mathf.Lerp(0.2f, 1, magnitude / 16); ;
                 break;
-            case FishState.released:
-                s = body.speed * 3;// * Mathf.Lerp(0.2f, 1, magnitude / 16); ;
-                break;
+            //case FishState.released:
+            //    s = body.speed * 3;// * Mathf.Lerp(0.2f, 1, magnitude / 16); ;
+            //    break;
             case FishState.attacking:
                 s = body.speedAttack;// * Mathf.Lerp(0.2f, 1, magnitude / 32); ;
                 //if(body.idBody == BodyID.Long) {
@@ -196,7 +197,7 @@ public class Fish : MonoBehaviour
 
     float GetAcceptableTargetDistance()
     {
-        if (state == FishState.attacking)
+        if (state == FishState.attacking || state == FishState.returning)
         {
             return 1;
             //return attackSuccessThreshold;
@@ -296,7 +297,7 @@ public class Fish : MonoBehaviour
 
     void MoveBackUpdate()
     {
-        Vector3 dirCenter = transform.parent.position - transform.position;
+        Vector3 dirCenter = transform.parent.position - transform.position - new Vector3(0,5,0);
         Vector3 _direction = dirCenter.normalized;
         //create the rotation we need to be in to look at the target
         Quaternion _lookRotation = Quaternion.LookRotation(_direction);
@@ -384,6 +385,10 @@ public class Fish : MonoBehaviour
             attacking || attacked ||
             state == FishState.attacking || state == FishState.escaping;
         //return attacking || attacked || escaping;
+    }
+
+    bool EnergySemiLow() {
+        return energy < body.energyStart * 0.75f;
     }
 
     bool EnergyLow ()
@@ -637,7 +642,7 @@ public class Fish : MonoBehaviour
 
     bool AttackTimeTest ()
     {
-        return Time.fixedTime - timeAttack > 20;
+        return Time.fixedTime - timeAttack > 30;
     }
 
     float AttackSuccessTest(Fish other, float min, float max)
@@ -649,12 +654,12 @@ public class Fish : MonoBehaviour
     public void AttackStart(Fish other)
     {
         if (Alive()) {
-            if (this.body.idBody != other.body.idBody && EnergyLow()) {
+            if (this.body.idBody != other.body.idBody && EnergySemiLow()) {
                 if ((head.idHead == HeadID.Bite && body.sizesEat.Contains(other.body.size)) ||
                     (head.idHead == HeadID.Swallow && other.body.idBody == BodyID.Mini)) {
                     if (DiscoverTest(other)) {
                         if (AttackTimeTest()) {
-                            if (!(IsStressed() || other.attacking || other.attacked || other.state == FishState.returning || !other.Alive())) {
+                            if (!(IsStressed() || other.attacking || other.attacked || other.state == FishState.returning || other.state == FishState.released || !other.Alive())) {
                                 state = FishState.attacking;
                                 head.SetBite(true);
                                 energy -= body.energyAttackCost;
@@ -800,11 +805,16 @@ public class Fish : MonoBehaviour
     void DoDie()
     {
         fishManager.RepopulateTest();
+        tweenWarning.Kill();
         Destroy(gameObject);
     }
 
     void OnDestroy()
     {
+    }
+
+    public void ResetSortingOrder () {
+        GetComponent<SortingGroup>().sortingOrder = 0;
     }
 
 }

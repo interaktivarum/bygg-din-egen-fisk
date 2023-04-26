@@ -34,6 +34,8 @@ public class FishBuilder : MonoBehaviour
     public Bounds boundsShow;
     public Bounds boundsHide;
 
+    Tween tweenFader;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,43 +57,81 @@ public class FishBuilder : MonoBehaviour
         }
     }
 
-    public void OpenMenu () {
+    public void OpenMenu() {
+        //if (!isOpen) {
+        isOpen = true;
         menu.GetComponent<RectTransform>().DOAnchorPosX(0, 1);
         menu.Find("Background").GetComponent<Image>().DOFade(1, 1);
         menu.Find("Content").GetComponent<CanvasGroup>().DOFade(1, 1);
         menu.Find("Content").GetComponent<CanvasGroup>().interactable = true;
-        transform.Find("Canvas/Fader").GetComponent<Image>().DOFade(0.75f, 1);
-        handle.Find("BtnSliderRotate").transform.DOLocalRotate(new Vector3(0, 0, 180), 1);
-        handle.Find("BtnSliderRotate").GetComponent<Pulse>().StopTween();
+
+        //if (tweenFader != null) {
+        //    tweenFader.Kill();
+        //}
+        transform.Find("Canvas/Fader").GetComponent<Image>().DOFade(0.9f, 1);
+
+        TextLocale tlHandle = handle.Find("BtnSlider").GetComponentInChildren<TextLocale>();
+        tlHandle.SetTexts(tlHandle.GetComponents<TextsLocale>()[1]);
+
+        //handle.Find("BtnSliderRotate").transform.DOLocalRotate(new Vector3(0, 0, 180), 1);
+        //handle.Find("BtnSliderRotate").GetComponent<Pulse>().StopTween();
+        
+        handle.Find("BtnSliderRotate").GetComponent<Image>().DOFade(0, 0.25f);
+
+
         if (container.childCount == 0) {
             CreateFish();
         }
         ShowFish();
+
         
-        isOpen = true;
+        //}
     }
 
     public void CloseMenu(bool releaseFish = false) {
+        //if (isOpen) {
+        isOpen = false;
         menu.GetComponent<RectTransform>().DOAnchorPosX(-760, 1);
         menu.Find("Background").GetComponent<Image>().DOFade(0, 1);
         menu.Find("Content").GetComponent<CanvasGroup>().DOFade(0, 1);
         menu.Find("Content").GetComponent<CanvasGroup>().interactable = false;
-        transform.Find("Canvas/Fader").GetComponent<Image>().DOFade(0, 1);
-        handle.Find("BtnSliderRotate").transform.DOLocalRotate(new Vector3(0, 0, 0), 1);
-        handle.Find("BtnSliderRotate").GetComponent<Pulse>().StartTween();
+
+        TextLocale tlHandle = handle.Find("BtnSlider").GetComponentInChildren<TextLocale>();
+        tlHandle.SetTexts(tlHandle.GetComponents<TextsLocale>()[0]);
+
+        //handle.Find("BtnSliderRotate").transform.DOLocalRotate(new Vector3(0, 0, 0), 1);
+        //handle.Find("BtnSliderRotate").GetComponent<Pulse>().StartTween();
+        handle.Find("BtnSliderRotate").GetComponent<Image>().DOFade(1, 0.25f);
+
         if (releaseFish) {
             ReleaseFish();
+            app.timeHelper.WaitAndCallFunction(RemoveFader, 3);
         }
         else {
             HideFish();
+            RemoveFader();
         }
-        isOpen = false;
+        //}
+        
+    }
+
+    void RemoveFader () {
+        //if (tweenFader != null) {
+        //    tweenFader.Kill();
+        //}
+        if (!isOpen) {
+            transform.Find("Canvas/Fader").GetComponent<Image>().DOFade(0, 1);
+        }
+        //isOpen = false;
     }
 
     void ResetFish() {
-        idBody = 0;
-        idHead = 0;
-        idPattern = 0;
+        //idBody = 0;
+        //idHead = 1;
+        //idPattern = 0;
+        idBody = Random.Range(0,3);
+        idHead = Random.Range(0, 3);
+        idPattern = Random.Range(0, 3);
     }
 
     public void CreateFish() {
@@ -117,13 +157,18 @@ public class FishBuilder : MonoBehaviour
 
     public void HideFish() {
         if (fish) {
-            fish.boundsHomeOverride = boundsHide;
-            fish.RandomTarget(boundsHide);
+            fish.transform.parent = fishManager.transform.Find("Fishes");
+            fish.state = FishState.idle;
+            fish.energy = 0;
+            //fish.Die(2.5f, true);
+            //fish.boundsHomeOverride = boundsHide;
+            //fish.RandomTarget(boundsHide);
         }
     }
 
     public void ReleaseFish() {
-        app.timeHelper.WaitAndCallFunction(ResetSortingOrder, 5);
+        //app.timeHelper.WaitAndCallFunction(ResetSortingOrder, 5);
+        ResetSortingOrder();
         fish.transform.parent = fishManager.transform.Find("Fishes");
         fish.state = FishState.released;
         fish.transform.DOScale(new Vector3(fish.body.scale, fish.body.scale, fish.body.scale), 15);
@@ -131,7 +176,7 @@ public class FishBuilder : MonoBehaviour
     }
 
     void ResetSortingOrder() {
-        fish.GetComponent<SortingGroup>().sortingOrder = 0;
+        app.timeHelper.WaitAndCallFunction(fish.ResetSortingOrder, 5);
     }
 
     //public void SetBody(FishBody body) {
@@ -141,15 +186,14 @@ public class FishBuilder : MonoBehaviour
     public void SetBody(int id) {
         idBody = id;
         fish.SetBody(fishFactory.GetBodyById(idBody, idPattern));
-        //selectBody.Find("Description/TextLocale").GetComponent<TextLocale>().SetTexts(body.GetComponent<TextsLocale>());
-        selectBody.Find("Description/TextLocale").GetComponent<TextLocale>().SetTexts(selectBody.Find("Buttons").GetChild(id).GetComponent<TextsLocale>());
+        UpdateText(selectBody.Find("Description/TextLocale").GetComponent<TextLocale>(), selectBody.Find("Buttons").GetChild(id).GetComponent<TextsLocale>());
         UpdateButtons();
     }
 
     public void SetHead(int id) {
         idHead = id;
         fish.SetHead(fishFactory.GetHeadById(idHead, idPattern));
-        selectHead.Find("Description/TextLocale").GetComponent<TextLocale>().SetTexts(selectHead.Find("Buttons").GetChild(id).GetComponent<TextsLocale>());
+        UpdateText(selectHead.Find("Description/TextLocale").GetComponent<TextLocale>(), selectHead.Find("Buttons").GetChild(id).GetComponent<TextsLocale>());
         UpdateButtons();
     }
 
@@ -157,8 +201,16 @@ public class FishBuilder : MonoBehaviour
         idPattern = id;
         fish.SetBody(fishFactory.GetBodyById(idBody, idPattern));
         fish.SetHead(fishFactory.GetHeadById(idHead, idPattern));
-        selectPattern.Find("Description/TextLocale").GetComponent<TextLocale>().SetTexts(selectPattern.Find("Buttons").GetChild(id).GetComponent<TextsLocale>());
+        UpdateText(selectPattern.Find("Description/TextLocale").GetComponent<TextLocale>(), selectPattern.Find("Buttons").GetChild(id).GetComponent<TextsLocale>());
         UpdateButtons();
+    }
+
+    void UpdateText(TextLocale tl, TextsLocale texts) {
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(tl.GetComponent<TextMeshProUGUI>().DOFade(0, 0.25f).OnComplete(() => {
+            tl.SetTexts(texts);
+        }));
+        sequence.Append(tl.GetComponent<TextMeshProUGUI>().DOFade(1, 0.25f));
     }
 
     void UpdateButtons() {

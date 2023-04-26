@@ -204,7 +204,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 610814249856202680, guid: d65848cce8927490ea555e0a3ca3ba76, type: 3}
       propertyPath: energyStart
-      value: 200
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 610814249856202680, guid: d65848cce8927490ea555e0a3ca3ba76, type: 3}
       propertyPath: speedAttack

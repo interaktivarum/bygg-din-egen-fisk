@@ -7,6 +7,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class App: MonoBehaviour
 {
@@ -15,13 +16,17 @@ public class App: MonoBehaviour
     //[Header("Objects")]
     //public Transform views;
     //public ViewBase viewActive;
+    public int interactionTimeout = 60;
+    bool interactionTimeoutActive;
 
     //Private variables
     float lastInteraction;
     //bool screensaver = true;
     public TimeHelper timeHelper;
     public ViewManager viewManager;
-    TextLocale[] textsLocale;
+
+    
+    UnityEvent interactionTimeoutEvent = new UnityEvent();
 
     private void Awake()
     {
@@ -33,7 +38,6 @@ public class App: MonoBehaviour
     {
         timeHelper = GetComponent<TimeHelper>();
         SetLastInteraction();
-        InitLocale();
 
         // Init singleton
         //AppSingleton.I.app = this;        
@@ -59,7 +63,10 @@ public class App: MonoBehaviour
     void Update()
     {
         KeyboardInput();
-        RestartTest();
+        InteractionTimeoutTest();
+        if (Input.anyKey) {
+            SetLastInteraction();
+        }
     }
 
     void SetViewManager (ViewManager vm)
@@ -69,6 +76,7 @@ public class App: MonoBehaviour
 
     void SetLastInteraction()
     {
+        interactionTimeoutActive = false;
         lastInteraction = Time.fixedTime;
     }
 
@@ -82,22 +90,6 @@ public class App: MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
-        }
-    }
-
-    // Language functions
-
-    public void InitLocale() {
-        textsLocale = FindObjectsOfType<TextLocale>(true);
-        //foreach (TextLocale tl in textsLocale) {
-        //    tl.Init(2);
-        //}
-    }
-    
-    public void SetLocale(int id)
-    {
-        foreach(TextLocale tl in textsLocale) {
-            tl.SetLocale(id);
         }
     }
 
@@ -149,12 +141,17 @@ public class App: MonoBehaviour
         SceneManager.LoadScene("Game");
     }
 
-    // App restart functions
-    void RestartTest()
+    // Interaction timeout functions
+
+    public void AddInteractionTimeoutListener(UnityAction callback) {
+        interactionTimeoutEvent.AddListener(callback);
+    }
+
+    void InteractionTimeoutTest()
     {
-        if (Time.fixedTime - lastInteraction > 60)
-        {
-            //RestartApp();
+        if (!interactionTimeoutActive && Time.fixedTime - lastInteraction > interactionTimeout && !viewManager.viewActive.ignoreInteractionTimeout) {
+            interactionTimeoutActive = true;
+            interactionTimeoutEvent.Invoke();
         }
     }
 
